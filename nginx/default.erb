@@ -1,0 +1,20 @@
+upstream appcluster {
+  <% (1..@servers.length).each do |i| -%>
+    server <%= @servers['node' + i.to_s] %>:8080;
+  <% end -%>
+
+  # This is much more nice to write but would require an array in yaml
+  # and the pain would be in Vagrantfile
+  #  <% @servers.each do |server| -%>
+  #    server <%= server %>:8080;
+  #  <% end -%>
+
+}
+
+server {
+  listen 80;
+
+  location / {
+    proxy_pass http://appcluster;
+  }
+}

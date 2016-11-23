@@ -1,7 +1,5 @@
 #!/bin/bash
 
-mkdir -p /etc/puppet/modules;
-
-if [ ! -d /etc/puppet/modules/puppet-nodejs ]; then
-  puppet module install puppet-nodejs --version 2.1.0
-fi
+# nodejs module has dependency on apt but its not declared
+puppet module install puppetlabs-apt --version 2.3.0
+puppet module install puppet-nodejs --version 2.1.0

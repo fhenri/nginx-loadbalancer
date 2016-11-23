@@ -1,0 +1,10 @@
+---
+:hierarchy:
+    - common
+
+:backends:
+    - yaml
+    - puppet
+
+:yaml:
+    :datadir: /vagrant/puppet/hieradata 
