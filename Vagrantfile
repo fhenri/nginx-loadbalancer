@@ -1,3 +1,4 @@
+# encoding: utf-8
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -21,6 +22,8 @@ Vagrant.configure("2") do |config|
         puppet.manifest_file = "base-app.pp"
         #puppet.options = "--verbose --trace"
       end
+      node_config.vm.provision "shell", path: "puppet/script/run-pm2.sh"
+
     end
   end
 
@@ -35,7 +38,7 @@ Vagrant.configure("2") do |config|
       puppet.manifests_path = "puppet/environments/production/manifests"
       puppet.manifest_file = "base-lb.pp"
       puppet.hiera_config_path = "puppet/hiera.yaml"
-      #puppet.options = "--verbose --trace"
+      puppet.options = "--verbose --debug"
     end
   end
 

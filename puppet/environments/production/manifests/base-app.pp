@@ -1,16 +1,14 @@
 class nodeapp {
 
-  class { 'nodejs': }
-  
-  exec {
-    'run-app':
-      command   => "node /vagrant/nodeapp/app.js &> /home/vagrant/app.log.out&",
-      cwd       => '/home/vagrant',
-      path      => '/usr/bin',
-      user      => vagrant,
-      logoutput => on_failure,
-      require   => Class["nodejs"];
+  class { 'nodejs':
+    version => 'v6.0.0',
   }
+  
+  package { 'pm2':
+    provider => 'npm',
+    require  => Class['nodejs']
+  }
+
 }
 
 include nodeapp
