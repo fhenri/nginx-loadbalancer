@@ -1,6 +1,9 @@
 class webserver { 
   
-  class { 'nginx': }
+  class { 'nginx': 
+    manage_repo     => true,
+    package_source  => 'nginx-stable'
+  }
 
   $servers = hiera('app_servers')
 
@@ -8,7 +11,7 @@ class webserver {
     "/etc/nginx/sites-available/default" :
       ensure  => 'file',
       owner   => 'root',
-      content => template("/vagrant/nginx/default.erb");
+      content => template("/tmp/vagrant-puppet/environments/production/nginx/default.erb");
   }
 
   File <|title == '/etc/nginx/sites-enabled/default'|> {
@@ -17,6 +20,12 @@ class webserver {
       require => File["/etc/nginx/sites-available/default"]
   }
 
-} 
+  firewall { '100 allow http and https access':
+    dport  => [80, 443],
+    proto  => 'tcp',
+    action => 'accept',
+  }
+}
 
 include webserver
+include firewall

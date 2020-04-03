@@ -7,7 +7,7 @@ settings = YAML.load_file File.join(File.dirname(__FILE__), "puppet/hieradata/co
 
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "puppetlabs/ubuntu-14.04-64-puppet"
+  config.vm.box = "puppetlabs/centos-7.0-64-puppet"
 
   app_servers = settings["app_servers"]
   app_servers.each do |node_server_name, node_server_ip|
@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
         puppet.environment_path = "puppet/environments"
         puppet.manifests_path = "puppet/environments/production/manifests"
         puppet.manifest_file = "base-app.pp"
-        #puppet.options = "--verbose --trace"
+        #puppet.options = "--verbose --debug"
       end
       node_config.vm.provision "shell", path: "puppet/script/run-pm2.sh"
 
@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
       puppet.manifests_path = "puppet/environments/production/manifests"
       puppet.manifest_file = "base-lb.pp"
       puppet.hiera_config_path = "puppet/hiera.yaml"
-      puppet.options = "--verbose --debug"
+      #puppet.options = "--verbose --debug"
     end
   end
 
